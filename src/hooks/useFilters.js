@@ -1,11 +1,17 @@
 import { useState, useMemo } from 'react';
 import { applyFilters, sortEscalas } from '../utils/filtersUtils';
 
-const initialFilters = {
+const getOffsetDateString = (daysOffset) => {
+    const d = new Date();
+    d.setDate(d.getDate() + daysOffset);
+    return d.toISOString().split('T')[0];
+};
+
+const getDefaultFilters = () => ({
     searchQuery: '',
     quickDate: '', 
-    dataInicial: '',
-    dataFinal: '',
+    dataInicial: getOffsetDateString(-15),
+    dataFinal: getOffsetDateString(30),
     aisp: '',
     posto: '',
     unidade: '',
@@ -16,17 +22,17 @@ const initialFilters = {
     graduacao: '',
     situacao: 'ativas', 
     mesOrigem: ''
-};
+});
 
 export function useFilters(rawEscalas) {
-    const [filters, setFilters] = useState(initialFilters);
+    const [filters, setFilters] = useState(getDefaultFilters());
 
     const updateFilter = (key, value) => {
         setFilters(prev => ({ ...prev, [key]: value }));
     };
 
     const clearFilters = () => {
-        setFilters(initialFilters);
+        setFilters(getDefaultFilters());
     };
 
     const filteredAndSorted = useMemo(() => {
