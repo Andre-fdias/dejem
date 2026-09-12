@@ -38,10 +38,10 @@ export function Header({ source, lastUpdate, isUpdating, refresh, theme, setThem
         <header className="app-header">
             <div className="container header-container">
                 <div className="header-brand">
-                    <h1 className="text-h1 flex items-center gap-sm">
-                        <span role="img" aria-label="Police car">🚔</span> DEJEM
+                    <h1 className="text-h1 flex items-center gap-sm" style={{ letterSpacing: '-0.5px' }}>
+                        <span role="img" aria-label="Police car">🚔</span> DEJEM <span style={{ color: 'var(--warning)' }}>2º SGB</span>
                     </h1>
-                    <p className="text-subtitle">15º GB - 2º SGB • CONSULTA DE ESCALAS</p>
+                    <p className="text-subtitle" style={{ color: 'var(--info)' }}>DASHBOARD DE ESCALAS</p>
                 </div>
 
                 <div className="header-controls">

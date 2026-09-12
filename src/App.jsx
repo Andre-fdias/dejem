@@ -42,9 +42,39 @@ export default function App() {
             />
 
             <main className="container pb-12">
-                <GlobalSearch onSearch={(val) => updateFilter('searchQuery', val)} />
-                
-                <div className="flex justify-between items-start flex-wrap gap-md mb-6">
+                <div style={{
+                    backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                    border: '1px solid var(--warning)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    marginTop: '24px',
+                    marginBottom: '24px'
+                }}>
+                    <span style={{ fontSize: '24px' }}>⚠️</span>
+                    <div>
+                        <h4 style={{ color: 'var(--warning)', fontWeight: 700, margin: 0, textTransform: 'uppercase', fontSize: '14px' }}>
+                            Atenção militares
+                        </h4>
+                        <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px' }}>
+                            É OBRIGATÓRIO A CONFERÊNCIA DA ESCALA NO SISTEMA DE ESCALAS DA PMESP (SGE).
+                        </p>
+                    </div>
+                </div>
+
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: '16px',
+                    marginBottom: '24px',
+                    background: 'var(--surface)',
+                    padding: '16px',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--border)'
+                }}>
+                    <GlobalSearch onSearch={(val) => updateFilter('searchQuery', val)} />
                     <QuickFilters currentQuickDate={filters.quickDate} updateFilter={updateFilter} />
                     <AdvancedFilters 
                         filters={filters} 

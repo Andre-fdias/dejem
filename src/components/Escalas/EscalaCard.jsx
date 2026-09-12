@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock, Users, Unlock, ArrowRight } from 'lucide-react';
+import { MapPin, Clock } from 'lucide-react';
 import { parseDateString, isExcluded } from '../../utils/normalizationUtils';
 import { APP_CONFIG } from '../../config/constants';
 import './Escalas.css';
@@ -12,7 +12,7 @@ export function EscalaCard({ escala, onClick }) {
     
     if (excluido) {
         statusClass = "badge-danger";
-        statusLabel = "ESCALA EXCLUÍDA";
+        statusLabel = "EXCLUÍDA";
     } else if (escala.vagasEmAberto <= 0) {
         statusClass = "badge-danger";
         statusLabel = "ESGOTADA";
@@ -23,59 +23,57 @@ export function EscalaCard({ escala, onClick }) {
 
     const dateObj = parseDateString(escala.dataInicio);
     const day = String(dateObj.getDate()).padStart(2, '0');
-    const monthNames = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
-    const month = monthNames[dateObj.getMonth()];
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
     const year = dateObj.getFullYear();
-    const daysWeek = ["DOMINGO", "SEGUNDA-FEIRA", "TERÇA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SÁBADO"];
-    const weekDay = daysWeek[dateObj.getDay()] || "";
 
     return (
         <div className={`escala-card ${excluido ? 'excluida' : ''}`} onClick={() => onClick(escala)}>
-            <div className="card-header">
-                <div className="card-date-info">
-                    <span className="card-date">{day} {month} {year}</span>
-                    <span className="card-weekday">{weekDay}</span>
+            <div className="card-top-accent"></div>
+            
+            <div className="card-header-new">
+                <div className="escala-id">ID: {escala.id || '---'}</div>
+                <div className="escala-date">{day}/{month}/{year}</div>
+            </div>
+
+            <div className="card-body">
+                <div className="card-meta-row">
+                    <MapPin size={14} className="text-info" />
+                    <span className="font-medium">{escala.posto || "Não informado"}</span>
                 </div>
+                <div className="card-meta-row">
+                    <Clock size={14} className="text-info" />
+                    <span className="font-medium">{escala.horaInicio} às {escala.horaTermino}</span>
+                </div>
+                
+                <div className="card-meta-row" style={{ marginTop: 8, marginBottom: 8 }}>
+                    <span className="meta-label">TIPO:</span>
+                    <span className="badge badge-neutral">{escala.tipoEscala || 'DEJEM'}</span>
+                </div>
+
+                <div className="military-box">
+                    <div className="military-box-title">MILITAR ESCALADO</div>
+                    {escala.nome && escala.nome.trim() !== '-' ? (
+                        <div className="military-info">
+                            <span className="mil-grad">{escala.graduacao || 'PM'}</span>
+                            <span className="mil-name">{escala.nome}</span>
+                        </div>
+                    ) : (
+                        <div className="military-info empty">Vaga disponível</div>
+                    )}
+                </div>
+            </div>
+
+            <div className="card-footer-new">
                 <div className={`badge ${statusClass}`}>
                     <span className="badge-dot" />
                     {statusLabel}
                 </div>
-            </div>
-
-            <div className="card-body">
-                <div className="card-location">
-                    <MapPin size={18} className="text-info" />
-                    <span className="location-text">{escala.posto || "Não informado"}</span>
+                <div className="vacancy-info">
+                    <span className={escala.vagasEmAberto > 0 ? 'text-success' : 'text-danger'}>
+                        {String(escala.vagasEmAberto).padStart(2, '0')}
+                    </span>
+                    <span className="text-muted"> / {String(escala.vagasPracas).padStart(2, '0')} ABERTAS</span>
                 </div>
-                
-                <div className="card-org">
-                    {escala.unidade} {escala.unidade && escala.sgb ? '•' : ''} {escala.sgb}
-                </div>
-
-                <div className="card-divider" />
-
-                <div className="card-time">
-                    <Clock size={16} className="text-muted" />
-                    <span>{escala.horaInicio} &rarr; {escala.horaTermino}</span>
-                </div>
-
-                <div className="card-vacancies">
-                    <div className="vacancy-item">
-                        <Users size={16} className="text-muted" />
-                        <span>{String(escala.vagasPracas).padStart(2, '0')} VAGAS</span>
-                    </div>
-                    <div className="vacancy-item highlight">
-                        <Unlock size={16} className={escala.vagasEmAberto > 0 ? "text-success" : "text-muted"} />
-                        <span className={escala.vagasEmAberto > 0 ? "text-success" : ""}>
-                            {String(escala.vagasEmAberto).padStart(2, '0')} EM ABERTO
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div className="card-footer">
-                <span className="text-info font-medium">Ver detalhes</span>
-                <ArrowRight size={16} className="text-info" />
             </div>
         </div>
     );
