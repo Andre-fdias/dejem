@@ -1,20 +1,20 @@
 :root {
   color-scheme: dark;
-  --background: #110E18; /* Roxo Noturno */
-  --surface: #1E1A2B;
-  --surface-elevated: #282338;
-  --surface-hover: #332C47;
-  --border: rgba(255, 255, 255, 0.08);
+  --background: #0B0E14; /* Navy Dark */
+  --surface: #131824;
+  --surface-elevated: #1E2536;
+  --surface-hover: #273043;
+  --border: rgba(255, 255, 255, 0.05);
 
   --text-primary: #F5F7FA;
-  --text-secondary: #B4AED2;
-  --text-muted: #797193;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
 
-  --success: #22c55e;
-  --warning: #FACC15; /* Amarelo/Ouro */
-  --danger: #ef4444;
-  --info: #A855F7; /* Roxo Elétrico */
-  --accent: #FACC15;
+  --success: #10B981;
+  --warning: #F59E0B; 
+  --danger: #EF4444;
+  --info: #3B82F6; 
+  --accent: #FF3B3B; /* Red Accent */
 
   --radius-sm: 4px;
   --radius-md: 8px;
