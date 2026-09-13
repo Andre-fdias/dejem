@@ -85,8 +85,8 @@ export default function App() {
                         <div className="flex justify-between items-end border-b border-white/10 pb-4">
                             <h2 className="text-xs font-bold text-text-muted uppercase tracking-widest">
                                 Escalas Encontradas <br/> 
-                                <span className="text-2xl font-black text-primary mt-1 block text-text-primary">
-                                    {filteredEscalas.length} <span className="text-sm font-medium text-text-secondary normal-case tracking-normal">resultados</span>
+                                <span className="text-xl font-black text-primary mt-1 block text-text-primary">
+                                    {filteredEscalas.length} <span className="text-xs font-medium text-text-secondary normal-case tracking-normal">resultados</span>
                                 </span>
                             </h2>
                             
