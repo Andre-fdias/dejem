@@ -1,38 +1,30 @@
 import React from 'react';
-import { parseDateString, isExcluded } from '../../utils/normalizationUtils';
-import { APP_CONFIG } from '../../config/constants';
-import './Escalas.css';
+import { parseDateString } from '../../utils/normalizationUtils';
+import { Users } from 'lucide-react';
 
 export function EscalasTable({ escalas, onEscalaClick }) {
     if (escalas.length === 0) return null;
 
     return (
-        <div className="table-container animate-fade">
-            <table className="escalas-table">
+        <div className="w-full overflow-x-auto bg-surface-elevated/40 backdrop-blur-md rounded-xl border border-white/10 shadow-lg animate-slide-up">
+            <table className="w-full text-left border-collapse">
                 <thead>
-                    <tr>
-                        <th>Data / Hora</th>
-                        <th>Posto / Unidade</th>
-                        <th>Vagas / Abertas</th>
-                        <th>Status</th>
+                    <tr className="bg-surface-hover/50 border-b border-white/10">
+                        <th className="px-4 py-3 text-xs font-bold text-text-muted uppercase tracking-wider">Data / Hora</th>
+                        <th className="px-4 py-3 text-xs font-bold text-text-muted uppercase tracking-wider">Posto / Unidade</th>
+                        <th className="px-4 py-3 text-xs font-bold text-text-muted uppercase tracking-wider">Militares</th>
+                        <th className="px-4 py-3 text-xs font-bold text-text-muted uppercase tracking-wider">Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-white/5">
                     {escalas.map(escala => {
-                        const excluido = isExcluded(escala);
-                        let statusClass = "badge-success";
-                        let statusLabel = "DISPONÍVEL";
+                        const militares = escala.militares || [];
+                        const hasMilitares = militares.length > 0;
                         
-                        if (excluido) {
-                            statusClass = "badge-danger";
-                            statusLabel = "EXCLUÍDA";
-                        } else if (escala.vagasEmAberto <= 0) {
-                            statusClass = "badge-danger";
-                            statusLabel = "ESGOTADA";
-                        } else if (escala.vagasEmAberto <= APP_CONFIG.lowVacancyThreshold) {
-                            statusClass = "badge-warning";
-                            statusLabel = "ÚLTIMAS VAGAS";
-                        }
+                        const statusClass = hasMilitares 
+                            ? "text-success bg-success/10 border-success/30" 
+                            : "text-warning bg-warning/10 border-warning/30";
+                        const statusLabel = hasMilitares ? "ESCALADO" : "NÃO SORTEADO";
 
                         const dateObj = parseDateString(escala.dataInicio);
                         const day = String(dateObj.getDate()).padStart(2, '0');
@@ -42,24 +34,27 @@ export function EscalasTable({ escalas, onEscalaClick }) {
                             <tr 
                                 key={escala.id || Math.random().toString()} 
                                 onClick={() => onEscalaClick(escala)}
-                                className={excluido ? 'excluida' : ''}
+                                className="hover:bg-white/5 transition-colors cursor-pointer group"
                             >
-                                <td>
-                                    <div className="table-cell-main">{day}/{month}/{dateObj.getFullYear()}</div>
-                                    <div className="table-cell-sub">{escala.horaInicio} às {escala.horaTermino}</div>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <div className="font-bold text-sm text-text-primary">{day}/{month}/{dateObj.getFullYear()}</div>
+                                    <div className="text-xs text-info mt-0.5">{escala.horaInicio} às {escala.horaTermino}</div>
                                 </td>
-                                <td>
-                                    <div className="table-cell-main">{escala.posto || "Não informado"}</div>
-                                    <div className="table-cell-sub">{escala.unidade} {escala.sgb}</div>
+                                <td className="px-4 py-3">
+                                    <div className="font-bold text-sm text-text-primary max-w-[200px] truncate" title={escala.posto}>{escala.posto || "Não informado"}</div>
+                                    <div className="text-xs text-text-muted mt-0.5">{escala.unidade} {escala.sgb}</div>
                                 </td>
-                                <td>
-                                    <div className="table-cell-main">{String(escala.vagasPracas).padStart(2, '0')} totais</div>
-                                    <div className={`table-cell-sub ${escala.vagasEmAberto > 0 ? 'text-success' : 'text-danger'}`}>
-                                        {String(escala.vagasEmAberto).padStart(2, '0')} abertas
+                                <td className="px-4 py-3">
+                                    <div className="flex items-center gap-2">
+                                        <Users size={14} className={hasMilitares ? 'text-warning' : 'text-text-muted opacity-50'} />
+                                        <span className={`text-xs font-bold ${hasMilitares ? 'text-text-primary' : 'text-text-muted italic'}`}>
+                                            {hasMilitares ? `${militares.length} alocado(s)` : 'Nenhum'}
+                                        </span>
                                     </div>
                                 </td>
-                                <td>
-                                    <div className={`badge ${statusClass}`}>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <div className={`w-fit flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border ${statusClass}`}>
+                                        <span className={`w-1.5 h-1.5 rounded-full ${hasMilitares ? 'bg-success' : 'bg-warning'} animate-pulse`} />
                                         {statusLabel}
                                     </div>
                                 </td>

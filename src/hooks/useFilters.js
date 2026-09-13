@@ -37,7 +37,30 @@ export function useFilters(rawEscalas) {
 
     const filteredAndSorted = useMemo(() => {
         const filtered = applyFilters(rawEscalas, filters);
-        return sortEscalas(filtered);
+        
+        const groupedMap = new Map();
+        filtered.forEach(escala => {
+            const groupKey = escala.id || Math.random().toString();
+            
+            if (!groupedMap.has(groupKey)) {
+                groupedMap.set(groupKey, {
+                    ...escala,
+                    militares: []
+                });
+            }
+            
+            if (escala.re && escala.nome && escala.nome.trim() !== '-') {
+                groupedMap.get(groupKey).militares.push({
+                    re: escala.re,
+                    nome: escala.nome,
+                    graduacao: escala.graduacao,
+                    policialStr: escala.policialStr
+                });
+            }
+        });
+
+        const groupedList = Array.from(groupedMap.values());
+        return sortEscalas(groupedList);
     }, [rawEscalas, filters]);
 
     const filterOptions = useMemo(() => {

@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --background: #110E18; /* Roxo Noturno */
   --surface: #1E1A2B;
   --surface-elevated: #282338;
@@ -31,6 +32,7 @@
 }
 
 [data-theme="light"] {
+  color-scheme: light;
   --background: #F4F2FA;
   --surface: #FFFFFF;
   --surface-elevated: #FFFFFF;

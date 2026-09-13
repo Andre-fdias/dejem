@@ -14,6 +14,7 @@ export function normalizeRow(row) {
         re: row["RE"] ?? "",
         nome: row["Nome"] ?? "",
         graduacao: row["Graduação"] ?? "",
+        policialStr: row["Policial (Graduação RE Nome)"] ?? "",
         vagasPracas: Number(row["Vagas Praças"]) || 0,
         vagasEmAberto: Number(row["Vagas em Aberto"]) || 0,
         escalaExcluida: row["Escala Excluída"] ?? "",
